@@ -18,7 +18,7 @@ def inception_v3_base(inputs, scope = None):
     end_points = {}
     with tf.variable_scope(scope, 'InceptionV3', [input]):
         with slim.arg_scope([slim.conv2d, slim.max_pool2d, slim.avg_pool2d], stride = 1, padding = 'VALID'):
-            net = slim.conv2d(input, 32, [3, 3], stride = 2, scope = 'Conv2d_1a_3x3')
+            net = slim.conv2d(inputs, 32, [3, 3], stride = 2, scope = 'Conv2d_1a_3x3')
             net = slim.conv2d(net, 32, [3, 3], scope = 'Conv2d_2a_3x3')
             net = slim.conv2d(net, 64, [3, 3], padding = 'SAME', scope = 'Conv2d_2b_3x3')
             net = slim.max_pool2d(net, [3, 3], stride = 2, scope = 'MaxPool_3a_3x3')
@@ -78,7 +78,7 @@ def inception_v3_base(inputs, scope = None):
                 with tf.variable_scope('Branch_1'):
                     branch_1 = slim.conv2d(net, 64, [1, 1], scope = 'Conv2d_0a_1x1')
                     branch_1 = slim.conv2d(branch_1, 96, [3, 3], scope = 'Conv2d_0b_3x3')
-                    branch_1 = slim.conv2d(branch_1, 96, [3, 3], scope = 'Conv2d_0c_3x3')
+                    branch_1 = slim.conv2d(branch_1, 96, [3, 3], stride = 2, padding = 'VALID', scope = 'Conv2d_0c_3x3')
                 with tf.variable_scope('Branch_2'):
                     branch_2 = slim.max_pool2d(net, [3, 3], stride = 2, padding = 'VALID', scope = 'MaxPool_0a_3x3')
                 net = tf.concat([branch_0, branch_1, branch_2], 3)
@@ -231,6 +231,8 @@ def inception_v3(inputs, num_classes = 1000, is_training = True, dropout_keep_pr
             end_points['Predictions'] = prediction_fn(logits, scope = 'Predictions')
     return logits, end_points
 
+from datetime import datetime
+import time
 def time_tensorflow_run(session, target, info_string):
     num_step_burn_in = 10
     total_duration = 0.0
