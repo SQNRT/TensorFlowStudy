@@ -232,6 +232,7 @@ def inception_v3(inputs, num_classes = 1000, is_training = True, dropout_keep_pr
     return logits, end_points
 
 from datetime import datetime
+import math
 import time
 def time_tensorflow_run(session, target, info_string):
     num_step_burn_in = 10
