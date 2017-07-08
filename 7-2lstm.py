@@ -49,12 +49,12 @@ class PTBModel(object):
             for time_step in range(num_steps):
                 if time_step > 0:
                     tf.get_variable_scope().reuse_variables()
-                    (cell_output, state) = cell(inputs[:, time_step, :], state)
-                    outputs.append(cell_output)
+                (cell_output, state) = cell(inputs[:, time_step, :], state)
+                outputs.append(cell_output)
         
         output = tf.reshape(tf.concat(outputs, 1), [-1, size])
         softmax_w = tf.get_variable("softmax_w", [size, vocab_size], dtype = tf.float32)
-        softmax_b = tf.get_variable("softmax_b", [vocab_size], dtpye = tf.float32)
+        softmax_b = tf.get_variable("softmax_b", [vocab_size], dtype = tf.float32)
         logits = tf.matmul(output, softmax_w) + softmax_b
         loss = tf.contrib.legacy_seq2seq.sequence_loss_by_example([logits], [tf.reshape(input_.targets, [-1])], [tf.ones([batch_size * num_steps], dtype = tf.float32)])
         self._cost = cost = tf.reduce_sum(loss) / batch_size
@@ -233,11 +233,11 @@ with tf.Graph().as_default():
             m.assign_lr(session, config.learning_rate * lr_decay)
 
 
-            print("Epoch %d: %d Learning rate: %.3f" % (i + 1, session.run(m.lr)))
+            print("Epoch: %d Learning rate: %.3f" % (i + 1, session.run(m.lr)))
             train_perplexity = run_epoch(session, m, eval_op = m.train_op, verbose = True)
-            print("Epoch %d: Train Perplexity: %.3f" % (i + 1, train_perplexity))
+            print("Epoch: %d Train Perplexity: %.3f" % (i + 1, train_perplexity))
             valid_perplexity = run_epoch(session, mvalid)
-            print("Epoch %d: Valid Perplexity: %.3f" % (i + 1, valid_perplexity))
+            print("Epoch: %d Valid Perplexity: %.3f" % (i + 1, valid_perplexity))
         
 
         test_perplexity = run_epoch(session, mtest)
