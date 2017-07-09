@@ -2,6 +2,8 @@ import numpy as np
 import tensorflow as tf
 import gym
 env = gym.make('CartPole-v0')
+'''from gym import wrappers
+env = wrappers.Monitor(env, '/tmp/cartpole-experiment-1')'''
 
 env.reset()
 random_episodes = 0
@@ -120,7 +122,7 @@ with tf.Session() as sess:
 
 
                 if reward_sum / batch_size > 200:
-                    print("Task solved in ", episode_number, ' episodes!')
+                    print("Task solved in", episode_number, 'episodes!')
                     break
 
 
