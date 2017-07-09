@@ -58,7 +58,7 @@ with tf.Session() as sess:
         if step % display_step == 0:
             acc = sess.run(accuracy, feed_dict = {x: batch_x, y: batch_y})
             loss = sess.run(cost, feed_dict = {x: batch_x, y: batch_y})
-            print("Iter " + str(step * batch_size) + ", Minibatch loss = " + "{:.6f}".format(loss) + ", Training Accuracy" + {:.5f}.format(acc))
+            print("Iter " + str(step * batch_size) + ", Minibatch loss = " + "{:.6f}".format(loss) + ", Training Accuracy" + "{:.5f}".format(acc))
         step += 1
     print("Optimization Finished!")
 
